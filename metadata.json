@@ -1,5 +1,5 @@
 {
   "name": "AIGuardian Hub",
-  "description": "A structured cybersecurity and India-focused debate platform for defending digital policies.",
+  "description": "A structured cybersecurity and India-focused debate platform with dark/light mode, Google Auth, and pre-built policy battles.",
   "requestFramePermissions": []
 }

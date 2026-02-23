@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, query, limit, getDocs, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
+import { seedDebates } from '../lib/seed';
 import { useAuth } from '../context/AuthContext';
 import { Debate } from '../types';
 import { Shield, Trophy, MessageSquare, TrendingUp, Clock, Users } from 'lucide-react';
@@ -17,6 +18,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDebates = async () => {
       try {
+        await seedDebates();
         const q = query(collection(db, 'debates'), orderBy('startTime', 'desc'), limit(5));
         const querySnapshot = await getDocs(q);
         const debates = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Debate));

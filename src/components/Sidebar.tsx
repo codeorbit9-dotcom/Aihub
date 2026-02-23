@@ -9,13 +9,17 @@ import {
   LogOut, 
   ShieldAlert,
   Menu,
-  X
+  X,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { cn } from '../lib/utils';
 
 export const Sidebar: React.FC<{ isOpen: boolean; toggle: () => void }> = ({ isOpen, toggle }) => {
   const { user, isAdmin, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const location = useLocation();
 
   const navItems = [
@@ -76,7 +80,14 @@ export const Sidebar: React.FC<{ isOpen: boolean; toggle: () => void }> = ({ isO
             ))}
           </nav>
 
-          <div className="mt-auto pt-6 border-t border-white/10">
+          <div className="mt-auto pt-6 border-t border-white/10 space-y-2">
+            <button
+              onClick={toggleTheme}
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-text-primary/60 transition-all hover:bg-white/5 hover:text-text-primary"
+            >
+              {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              <span className="font-medium">{theme === 'light' ? 'Dark Mode' : 'Light Mode'}</span>
+            </button>
             <button
               onClick={logout}
               className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-danger-red transition-all hover:bg-danger-red/10"
