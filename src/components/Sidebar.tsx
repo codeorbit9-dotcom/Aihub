@@ -12,11 +12,10 @@ import {
   X
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { auth } from '../firebase';
 import { cn } from '../lib/utils';
 
 export const Sidebar: React.FC<{ isOpen: boolean; toggle: () => void }> = ({ isOpen, toggle }) => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, logout } = useAuth();
   const location = useLocation();
 
   const navItems = [
@@ -79,7 +78,7 @@ export const Sidebar: React.FC<{ isOpen: boolean; toggle: () => void }> = ({ isO
 
           <div className="mt-auto pt-6 border-t border-white/10">
             <button
-              onClick={() => auth.signOut()}
+              onClick={logout}
               className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-danger-red transition-all hover:bg-danger-red/10"
             >
               <LogOut className="h-5 w-5" />

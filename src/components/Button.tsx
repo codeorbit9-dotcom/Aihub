@@ -16,11 +16,11 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const variants = {
-    primary: 'bg-sky-blue text-primary-blue hover:bg-sky-blue/90 cyber-glow-hover font-bold',
+    primary: 'bg-sky-blue text-white hover:bg-sky-blue/90 cyber-glow-hover font-bold',
     secondary: 'bg-primary-blue text-sky-blue border border-sky-blue hover:bg-sky-blue/10',
-    outline: 'bg-transparent border border-white/20 text-text-primary hover:bg-white/5',
+    outline: 'bg-transparent border border-black/20 dark:border-white/20 text-text-primary hover:bg-black/5 dark:hover:bg-white/5',
     danger: 'bg-danger-red text-white hover:bg-danger-red/90',
-    ghost: 'bg-transparent text-text-primary hover:bg-white/5',
+    ghost: 'bg-transparent text-text-primary hover:bg-black/5 dark:hover:bg-white/5',
   };
 
   const sizes = {

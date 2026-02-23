@@ -13,11 +13,16 @@ const Leaderboard: React.FC = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       setLoading(true);
-      const q = query(collection(db, 'users'), orderBy('credibility', 'desc'), limit(20));
-      const querySnapshot = await getDocs(q);
-      const users = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
-      setTopUsers(users);
-      setLoading(false);
+      try {
+        const q = query(collection(db, 'users'), orderBy('credibility', 'desc'), limit(20));
+        const querySnapshot = await getDocs(q);
+        const users = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as User));
+        setTopUsers(users);
+      } catch (error) {
+        console.error('Fetch leaderboard error:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchLeaderboard();

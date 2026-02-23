@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-blue: #0A1F44;
-  --color-sky-blue: #38BDF8;
-  --color-bg-dark: #0F172A;
-  --color-card-bg: #1E293B;
-  --color-text-primary: #E2E8F0;
+  --color-primary-blue: var(--theme-primary-blue);
+  --color-sky-blue: var(--theme-sky-blue);
+  --color-bg-dark: var(--theme-bg-dark);
+  --color-card-bg: var(--theme-card-bg);
+  --color-text-primary: var(--theme-text-primary);
   --color-success-green: #22C55E;
   --color-danger-red: #EF4444;
 
@@ -13,21 +13,51 @@
 }
 
 @layer base {
+  :root {
+    /* Light Theme */
+    --theme-primary-blue: #0A1F44;
+    --theme-sky-blue: #0284C7; /* Darker for better contrast on light bg */
+    --theme-bg-dark: #F8FAFC;
+    --theme-card-bg: #FFFFFF;
+    --theme-text-primary: #0F172A;
+  }
+
+  .dark {
+    /* Dark Theme */
+    --theme-primary-blue: #0A1F44;
+    --theme-sky-blue: #38BDF8;
+    --theme-bg-dark: #0F172A;
+    --theme-card-bg: #1E293B;
+    --theme-text-primary: #E2E8F0;
+  }
+
   body {
-    @apply bg-bg-dark text-text-primary font-sans antialiased;
+    @apply bg-bg-dark text-text-primary font-sans antialiased transition-colors duration-300;
   }
 }
 
 @layer components {
   .cyber-glow {
+    box-shadow: 0 0 15px rgba(2, 132, 199, 0.15);
+  }
+  
+  .dark .cyber-glow {
     box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
   }
   
   .cyber-glow-hover:hover {
+    box-shadow: 0 0 25px rgba(2, 132, 199, 0.25);
+  }
+
+  .dark .cyber-glow-hover:hover {
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
   }
 
   .glass-card {
-    @apply bg-card-bg/80 backdrop-blur-md border border-white/10 rounded-xl;
+    @apply bg-card-bg/90 backdrop-blur-md border border-black/5 rounded-xl;
+  }
+
+  .dark .glass-card {
+    @apply border-white/10;
   }
 }

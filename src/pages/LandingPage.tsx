@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldAlert, MessageSquare, Trophy, Users, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ShieldAlert, MessageSquare, Trophy, Users, ArrowRight, Sun, Moon } from 'lucide-react';
 import { Button } from '../components/Button';
 import { motion } from 'motion/react';
+import { useTheme } from '../context/ThemeContext';
 
 const LandingPage: React.FC = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="min-h-screen bg-bg-dark text-text-primary overflow-x-hidden">
+    <div className="min-h-screen bg-bg-dark text-text-primary overflow-x-hidden transition-colors duration-300">
       {/* Navbar */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-bg-dark/80 backdrop-blur-md">
+      <nav className="fixed top-0 z-50 w-full border-b border-black/5 dark:border-white/10 bg-bg-dark/80 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link to="/" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg bg-sky-blue flex items-center justify-center">
@@ -22,6 +25,9 @@ const LandingPage: React.FC = () => {
             <Link to="/about" className="text-sm font-medium text-text-primary/70 hover:text-sky-blue">About</Link>
           </div>
           <div className="flex items-center gap-4">
+            <button onClick={toggleTheme} className="p-2 text-text-primary/70 hover:text-sky-blue transition-colors">
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
             <Link to="/login">
               <Button variant="ghost" size="sm">Login</Button>
             </Link>

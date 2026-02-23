@@ -25,14 +25,19 @@ const DebatePage: React.FC = () => {
     if (!id) return;
 
     const fetchDebate = async () => {
-      const docRef = doc(db, 'debates', id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setDebate({ id: docSnap.id, ...docSnap.data() } as Debate);
-      } else {
-        navigate('/dashboard');
+      try {
+        const docRef = doc(db, 'debates', id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setDebate({ id: docSnap.id, ...docSnap.data() } as Debate);
+        } else {
+          navigate('/dashboard');
+        }
+      } catch (error) {
+        console.error('Fetch debate error:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchDebate();
@@ -44,7 +49,6 @@ const DebatePage: React.FC = () => {
       setArgumentsList(args);
       
       // Determine current round based on arguments count
-      // Round 1: Opening (2 args), Round 2: Rebuttal (2 args), Round 3: Closing (2 args)
       const count = args.length;
       if (count < 2) setCurrentRound(1);
       else if (count < 4) setCurrentRound(2);
@@ -93,7 +97,6 @@ const DebatePage: React.FC = () => {
       return;
     }
 
-    // Check if it's user's turn
     const isSideA = debate.sideA_user === user.id;
     const isSideB = debate.sideB_user === user.id;
     
@@ -101,7 +104,6 @@ const DebatePage: React.FC = () => {
 
     const side = isSideA ? 'A' : 'B';
     
-    // Check if user already posted for this round
     const existing = argumentsList.find(a => a.round === currentRound && a.side === side);
     if (existing) {
       alert('You have already submitted your argument for this round.');

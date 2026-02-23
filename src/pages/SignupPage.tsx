@@ -16,11 +16,7 @@ const SignupPage: React.FC = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Verification state
-  const [step, setStep] = useState<'details' | 'verify'>('details');
-  const [verificationCode, setVerificationCode] = useState('');
-
-  const handleSendCode = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -40,45 +36,7 @@ const SignupPage: React.FC = () => {
         return;
       }
 
-      // Send verification code via our API
-      const response = await fetch('/api/send-verification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, type: 'signup' }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send verification code');
-      }
-
-      setStep('verify');
-    } catch (err: any) {
-      setError(err.message || 'Failed to process request');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyAndCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      // Verify code via our API
-      const response = await fetch('/api/verify-code', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, code: verificationCode }),
-      });
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || 'Invalid verification code');
-      }
-
-      // Code is valid, create user in Firebase
+      // Create user in Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
@@ -116,84 +74,48 @@ const SignupPage: React.FC = () => {
           <p className="mt-2 text-text-primary/60">Start your journey as a Cyber Guardian</p>
         </div>
 
-        {step === 'details' ? (
-          <form onSubmit={handleSendCode} className="glass-card p-8 space-y-4 cyber-glow">
-            {error && (
-              <div className="rounded-lg bg-danger-red/10 p-3 text-sm text-danger-red border border-danger-red/20">
-                {error}
-              </div>
-            )}
-            <Input
-              label="Username"
-              type="text"
-              placeholder="cyber_guardian"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-            <Input
-              label="Email Address"
-              type="email"
-              placeholder="name@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <Input
-              label="Password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <Input
-              label="Confirm Password"
-              type="password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-            <Button type="submit" className="w-full mt-4" isLoading={loading}>
-              Send Verification Code
-            </Button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyAndCreate} className="glass-card p-8 space-y-4 cyber-glow">
-            {error && (
-              <div className="rounded-lg bg-danger-red/10 p-3 text-sm text-danger-red border border-danger-red/20">
-                {error}
-              </div>
-            )}
-            <div className="text-center mb-4">
-              <p className="text-sm text-text-primary/80">
-                We've sent a 6-digit code to <strong>{email}</strong>.
-              </p>
+        <form onSubmit={handleSignup} className="glass-card p-8 space-y-4 cyber-glow">
+          {error && (
+            <div className="rounded-lg bg-danger-red/10 p-3 text-sm text-danger-red border border-danger-red/20">
+              {error}
             </div>
-            <Input
-              label="Verification Code"
-              type="text"
-              placeholder="123456"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              required
-              maxLength={6}
-            />
-            <Button type="submit" className="w-full mt-4" isLoading={loading}>
-              Verify & Create Account
-            </Button>
-            <div className="text-center mt-4">
-              <button 
-                type="button" 
-                onClick={() => setStep('details')}
-                className="text-sm text-sky-blue hover:underline"
-              >
-                Back to details
-              </button>
-            </div>
-          </form>
-        )}
+          )}
+          <Input
+            label="Username"
+            type="text"
+            placeholder="cyber_guardian"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+          <Input
+            label="Email Address"
+            type="email"
+            placeholder="name@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            label="Password"
+            type="password"
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Input
+            label="Confirm Password"
+            type="password"
+            placeholder="••••••••"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+          <Button type="submit" className="w-full mt-4" isLoading={loading}>
+            Create Account
+          </Button>
+        </form>
 
         <p className="text-center text-sm text-text-primary/60">
           Already have an account?{' '}

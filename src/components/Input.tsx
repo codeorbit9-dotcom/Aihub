@@ -12,7 +12,7 @@ export const Input: React.FC<InputProps> = ({ label, error, className, ...props 
       {label && <label className="text-sm font-medium text-text-primary/70">{label}</label>}
       <input
         className={cn(
-          'w-full rounded-xl border border-white/10 bg-card-bg px-4 py-2 text-text-primary outline-none transition-all focus:border-sky-blue/50 focus:ring-1 focus:ring-sky-blue/50',
+          'w-full rounded-xl border border-black/10 dark:border-white/10 bg-card-bg px-4 py-2 text-text-primary outline-none transition-all focus:border-sky-blue/50 focus:ring-1 focus:ring-sky-blue/50',
           error && 'border-danger-red focus:border-danger-red focus:ring-danger-red',
           className
         )}

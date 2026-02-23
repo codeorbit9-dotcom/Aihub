@@ -1,21 +1,23 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { onAuthStateChanged, User as FirebaseUser, signOut } from 'firebase/auth';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { User } from '../types';
 
 interface AuthContextType {
-  user: User | null;
   firebaseUser: FirebaseUser | null;
+  user: User | null;
   loading: boolean;
   isAdmin: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  user: null,
   firebaseUser: null,
+  user: null,
   loading: true,
   isAdmin: false,
+  logout: async () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -26,24 +28,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (fUser) => {
       setFirebaseUser(fUser);
+      
       if (fUser) {
-        const userDoc = await getDoc(doc(db, 'users', fUser.uid));
-        if (userDoc.exists()) {
-          setUser({ id: fUser.uid, ...userDoc.data() } as User);
-        }
+        // Listen to user profile changes in Firestore
+        const userRef = doc(db, 'users', fUser.uid);
+        const unsubProfile = onSnapshot(userRef, (docSnap) => {
+          if (docSnap.exists()) {
+            setUser({ id: docSnap.id, ...docSnap.data() } as User);
+          }
+          setLoading(false);
+        });
+        return () => unsubProfile();
       } else {
         setUser(null);
+        setLoading(false);
       }
-      setLoading(false);
     });
 
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
+
+  const logout = async () => {
+    await signOut(auth);
+  };
 
   const isAdmin = user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, firebaseUser, loading, isAdmin }}>
+    <AuthContext.Provider value={{ firebaseUser, user, loading, isAdmin, logout }}>
       {children}
     </AuthContext.Provider>
   );

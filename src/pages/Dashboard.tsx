@@ -16,11 +16,16 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const fetchDebates = async () => {
-      const q = query(collection(db, 'debates'), orderBy('startTime', 'desc'), limit(5));
-      const querySnapshot = await getDocs(q);
-      const debates = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Debate));
-      setActiveDebates(debates);
-      setLoading(false);
+      try {
+        const q = query(collection(db, 'debates'), orderBy('startTime', 'desc'), limit(5));
+        const querySnapshot = await getDocs(q);
+        const debates = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Debate));
+        setActiveDebates(debates);
+      } catch (error) {
+        console.error('Fetch debates error:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchDebates();

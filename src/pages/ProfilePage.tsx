@@ -17,24 +17,29 @@ const ProfilePage: React.FC = () => {
     const fetchProfile = async () => {
       if (!username) return;
       
-      const q = query(collection(db, 'users'), where('username', '==', username), limit(1));
-      const querySnapshot = await getDocs(q);
-      
-      if (!querySnapshot.empty) {
-        const userData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() } as User;
-        setProfileUser(userData);
+      try {
+        const q = query(collection(db, 'users'), where('username', '==', username), limit(1));
+        const querySnapshot = await getDocs(q);
         
-        // Fetch user's debates
-        const dq = query(
-          collection(db, 'debates'), 
-          where('sideA_user', '==', userData.id),
-          limit(10)
-        );
-        const dSnap = await getDocs(dq);
-        const debates = dSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Debate));
-        setUserDebates(debates);
+        if (!querySnapshot.empty) {
+          const userData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() } as User;
+          setProfileUser(userData);
+          
+          // Fetch user's debates
+          const dq = query(
+            collection(db, 'debates'), 
+            where('sideA_user', '==', userData.id),
+            limit(10)
+          );
+          const dSnap = await getDocs(dq);
+          const debates = dSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Debate));
+          setUserDebates(debates);
+        }
+      } catch (error) {
+        console.error('Fetch profile error:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchProfile();
@@ -86,7 +91,7 @@ const ProfilePage: React.FC = () => {
                 <span className="font-bold">{profileUser.credibility} Credibility</span>
               </div>
               <div className="h-1 w-1 rounded-full bg-white/20" />
-              <div className="text-text-primary/60">Joined {new Date(profileUser.createdAt?.seconds * 1000).toLocaleDateString()}</div>
+              <div className="text-text-primary/60">Joined {new Date(profileUser.createdAt).toLocaleDateString()}</div>
             </div>
           </div>
         </div>
