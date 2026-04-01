@@ -1,20 +1,52 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+HubAIGuardian 🌐
+The official community hub, a product of AIGuardian.in
 
-# Run and deploy your AI Studio app
+Welcome to HubAIGuardian (hubaigurdian.in)! This is the central gathering place for the AIGuardian community to connect, share ideas, and engage in thought-provoking discussions.
 
-This contains everything you need to run your app locally.
+📖 About The Project
+While AIGuardian focuses on delivering top-tier AI solutions, HubAIGuardian is designed to give our users a voice.
 
-View your app in AI Studio: https://ai.studio/apps/718fae78-287e-4187-8f8a-4fdfa2cdfc9f
+The core of this platform is our interactive Community Debate Page. We believe that the best ideas are forged through constructive discourse. This space allows users to propose topics, take a stance, and engage in healthy, structured, and insightful debates regarding technology, AI ethics, and beyond.
 
-## Run Locally
+✨ Key Features
+🎙️ Community Debate Hub: A dedicated space to start and participate in debates. Choose a side, present your arguments, and upvote the most compelling points.
 
-**Prerequisites:**  Node.js
+🛡️ Constructive Environment: Built-in moderation features to ensure that all debates remain respectful, educational, and productive.
+
+🤝 Seamless Integration: Fully connected with the broader aiguardian.in ecosystem.
+
+📊 User Engagement: Track your contributions, earn community respect, and climb the leaderboards based on the quality of your debate points.
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+💬 How the Debate Page Works
+The debate section is the heart of HubAIGuardian. Here is how you can jump in:
+
+Discover: Navigate to the Community tab and browse active debate topics.
+
+Take a Stand: Choose whether you are "For" or "Against" a specific premise.
+
+Argue: Write down your perspective. You can cite sources, link to articles, and format your arguments for maximum impact.
+
+Engage: Read points from the opposing side, reply with counter-arguments, and upvote the best responses in the thread.
+
+🤝 Contributing
+We want HubAIGuardian to grow alongside its community. If you have an idea to improve the platform, we'd love your help!
+
+Fork the Project
+
+Create your Feature Branch (git checkout -b feature/AmazingFeature)
+
+Commit your Changes (git commit -m 'Add some AmazingFeature')
+
+Push to the Branch (git push origin feature/AmazingFeature)
+
+Open a Pull Request
+
+📫 Contact & Links
+Platform: hubaigurdian.in
+
+Parent Product: aiguardian.in
+
+Support: support@aiguardian.in
+
+Built with ❤️ by the AIGuardian Team.
